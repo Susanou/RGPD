@@ -2,6 +2,8 @@
 
 ## Pratiques de code securisé
 
+[OWASP checklist des pratiques de codes](https://owasp.org/www-pdf-archive/OWASP_SCP_Quick_Reference_Guide_v1.pdf)
+
 ## Methodes de cryptage de données
 
 La méthode la plus courante pour crypter les données sensibles est le hashage.
@@ -25,6 +27,12 @@ ligne aléatoire de caractères. Pour avoir un sel robuste, il faut utiliser un 
 
 Cette liste est sujette à changement. Bien vérifié que ces CSPRNG sont encore utilisables (Liste à dater du 24/06/2020)
 
+A dater du 24/06/2020 voici les algorithmes de hashage à utiliser de préférence:
+
+- PBKDF2
+- bcrypt
+- scrypt
+
 ### Exemple en Python
 
 ```Python
@@ -46,3 +54,51 @@ def verify_password(stored_password, provided_password):
 
     return pwdhash == stored_password
 ```
+
+## Quelles données protéger?
+
+Pour assurer la protection des données personelles, il faut dans un premier temps identifier quelles données sont classées en tant que données personelles.
+
+- nom, prénom, pseudo, date de naissance
+- photos, enregistrements vidéos/audio
+- numéro de téléphone, adresse postale et e-mail
+- adresse IP, identifiants de connection/cookies
+- empreinte digitale/veineux/palmaire ou empreinte rétinienne
+- numéro de sécurité sociale/identité4
+- données d'usage/commentaires etc.
+
+Les données ci-dessous ne peuvent-être récoltées que si l'utilisateur en a donnée son consentement écrit:
+
+- vie ou orientation sexuelle
+- origine raciale ou éthnique
+- opinions politiques/religieux/philosophiques/syndicales
+- santé de l'individu
+
+Quel que soit la méthode employée, les données sont considérées comme protéger lorsqu'elles sont:
+
+- **_Individualisation_**: Qu'il ne soit pas possible d'isoler une partie ou la totalité des enregistrements relatifs à un individu
+- **_Corrélation_**: Qu'il ne soit pas possible de relier deux enregistrements relatifs à un individu ou à un groupe de personnes
+- **_Inférance_**: Qu'il soit impossible de déduire la valeur d'un attribut depuis des informations intern ou externes au jeu de données
+
+Pour les protéger, il existe 2 méthodes:
+
+### Anonymisation des données
+
+L'anonymisation consiste à rendre impossible toute identification d'un individu au sein d'un jeu de données. Le processus est donc irréversible. Cela permet de ne plus considérer les données comme données personelles et donc les RGPD ne sont plus applicables dessus.
+
+En général ces techniques entrainent une perte de qualité du jeu de données ce qui rend impossible son utilisation en statistique ou autre usage.
+
+Dans l'ensemble des techniques il y a:
+
+- La randomisation
+  - Ajout de "bruit"
+  - Permuations
+- Généralisation
+
+### Pseudonymisation des données
+
+
+
+
+
+**Il est important de rapeler qu'il n'existe aucune solution parfaite et donc qu'il fait adapter chaque solution à son besoin.**

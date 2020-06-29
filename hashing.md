@@ -80,6 +80,8 @@ Quel que soit la méthode employée, les données sont considérées comme prot�
 - **_Corrélation_**: Qu'il ne soit pas possible de relier deux enregistrements relatifs à un individu ou à un groupe de personnes
 - **_Inférance_**: Qu'il soit impossible de déduire la valeur d'un attribut depuis des informations intern ou externes au jeu de données
 
+**Il est important de rapeler qu'il n'existe aucune solution parfaite et donc qu'il fait adapter chaque solution à son besoin.**
+
 Pour les protéger, il existe 2 méthodes:
 
 ### Anonymisation des données
@@ -97,8 +99,12 @@ Dans l'ensemble des techniques il y a:
 
 ### Pseudonymisation des données
 
+La Pseudonymisation des données consiste à traiter les données de façon à ne pas pouvoir attribuer les informations à une personne physique. 
 
+Les techiniques utilisables sont:
 
+- Systeme cyprographique a clef secrete ou publique (AES 256, etc)
+- Fonction de hashage avec ou sans clef avec ou sans destruction de la clef
+- tokenisation
 
-
-**Il est important de rapeler qu'il n'existe aucune solution parfaite et donc qu'il fait adapter chaque solution à son besoin.**
+La pseudonymisation des données en général permet encore l'individualisation des données mais devrait empêcher tout attaqueur de relier ces données à un individu en particulier.

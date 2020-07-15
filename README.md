@@ -97,9 +97,23 @@ Dans l'ensemble des techniques il y a:
   - Permuations
 - Généralisation
 
+#### Example d'anonymization avec K-anonymisation
+
+<cite>[CNIL][1]</cite>
+
+| nom | sexe | age     | salaire       | pays |
+| --- | ---- | ------- | ------------- | ---- |
+| \*  | M    | <=20    | Above average | JP   |
+| \*  | M    | <=20    | Below average | US   |
+| \*  | F    | 20<x<30 | Above average | GE   |
+| \*  | F    | 30<x<50 | Below average | IR   |
+| \*  | M    | 20<x<30 | Belowaverage  | IR   |
+
+**ATTENTION** cette technique permet encore les attques par inférences.
+
 ### Pseudonymisation des données
 
-La Pseudonymisation des données consiste à traiter les données de façon à ne pas pouvoir attribuer les informations à une personne physique. 
+La Pseudonymisation des données consiste à traiter les données de façon à ne pas pouvoir attribuer les informations à une personne physique.
 
 Les techiniques utilisables sont:
 
@@ -108,3 +122,7 @@ Les techiniques utilisables sont:
 - tokenisation
 
 La pseudonymisation des données en général permet encore l'individualisation des données mais devrait empêcher tout attaqueur de relier ces données à un individu en particulier.
+
+## Bibliographie
+
+[1]: https://www.cnil.fr/sites/default/files/atoms/files/wp216_fr.pdf

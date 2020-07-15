@@ -1,8 +1,45 @@
+- [Security RGPD](#security-rgpd)
+  - [Pratiques de code securisé](#pratiques-de-code-securisé)
+    - [Vulnérabilités les plus connues](#vulnérabilités-les-plus-connues)
+      - [Injection (SQLi, OS command, ...)](#injection-sqli-os-command-)
+  - [Methodes de cryptage de données](#methodes-de-cryptage-de-données)
+    - [Exemple en Python](#exemple-en-python)
+  - [Quelles données protéger?](#quelles-données-protéger)
+    - [Anonymisation des données](#anonymisation-des-données)
+      - [Example d'anonymization avec K-anonymisation](#example-danonymization-avec-k-anonymisation)
+    - [Pseudonymisation des données](#pseudonymisation-des-données)
+  - [Bibliographie](#bibliographie)
+
 # Security RGPD
 
 ## Pratiques de code securisé
 
 [OWASP checklist des pratiques de codes](https://owasp.org/www-pdf-archive/OWASP_SCP_Quick_Reference_Guide_v1.pdf)
+
+Le guide suivant contient une liste de pratique de code qui permet d'éviter es plus grandes vulnérabilités qui peuvent survenir lors de la production d'une application.
+
+### Vulnérabilités les plus connues
+
+#### Injection (SQLi, OS command, ...)
+
+Cette attaque consiste à utiliser des points d'entrée comme des inputs de formulaire et d'y inséréer une commande dans le language utilisé
+
+**Example avec SQL**
+```JS
+String query = "SELECT * FROM accounts WHERE custID='" + request.getParameter("id")+"'";
+```
+
+```URL
+http://example.com/app/acount?id=' or '1'='1
+```
+
+En donnant ce payload, cela permet de donner tout le contenu de la base de donnee.
+Pour se défendre contre ce type d'attaque, il y a quelques solutions:
+
+- Grader les données séparées des requêtes (**LE PLUS IMMPORTANT**)
+- Utiliser des APIs sécurisées pour éviter d'avoir recours à des interpréteurs
+- Créer une "white list" pour la validation côté serveur
+
 
 ## Methodes de cryptage de données
 
@@ -38,21 +75,43 @@ A dater du 24/06/2020 voici les algorithmes de hashage à utiliser de préféren
 ```Python
 import binascii, os, hashlib
 
+
 def hash_password(password):
+    """Function that hashes a password with a random salt
+
+    Args:
+        password : String that is the password
+
+    Returns:
+        str : returns a hex string of the hash
+    """
     salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('utf-8')
-    pwdhash = hashlib.scrypt(bytes(password, 'utf-8'), salt=bytes(salt), n=16384, r=8, p=1)
+    pwdhash = hashlib.scrypt(
+        bytes(password, 'utf-8'), salt=bytes(salt), n=16384, r=8, p=1)
 
     pwdhash = binascii.hexlify(pwdhash)
     return (salt + pwdhash).decode('ascii')
 
+
 def verify_password(stored_password, provided_password):
+    """Function to check a password against a stored salted hash
+
+    Args:
+        stored_password (str): salted hash of the stored passord
+        provided_password (str): string that is the password
+
+    Returns:
+        bool : Returns Trues if the hashes match, False otherwise
+    """
     salt = stored_password[:64]
     stored_password = stored_password[64:]
 
-    pwdhash = hashlib.scrypt(bytes(provided_password, 'utf-8'), salt=bytes(salt, 'utf-8'), n=16384, r=8, p=1)
+    pwdhash = hashlib.scrypt(bytes(provided_password, 'utf-8'),
+                             salt=bytes(salt, 'utf-8'), n=16384, r=8, p=1)
     pwdhash = binascii.hexlify(pwdhash).decode('ascii')
 
     return pwdhash == stored_password
+
 ```
 
 ## Quelles données protéger?
@@ -99,8 +158,6 @@ Dans l'ensemble des techniques il y a:
 
 #### Example d'anonymization avec K-anonymisation
 
-<cite>[CNIL][1]</cite>
-
 | nom | sexe | age     | salaire       | pays |
 | --- | ---- | ------- | ------------- | ---- |
 | \*  | M    | <=20    | Above average | JP   |
@@ -108,6 +165,8 @@ Dans l'ensemble des techniques il y a:
 | \*  | F    | 20<x<30 | Above average | GE   |
 | \*  | F    | 30<x<50 | Below average | IR   |
 | \*  | M    | 20<x<30 | Belowaverage  | IR   |
+
+<cite>[CNIL][1]</cite>
 
 **ATTENTION** cette technique permet encore les attques par inférences.
 

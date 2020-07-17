@@ -166,7 +166,7 @@ Dans l'ensemble des techniques il y a:
 | \*  | F    | 30<x<50 | Below average | IR   |
 | \*  | M    | 20<x<30 | Belowaverage  | IR   |
 
-<cite>[CNIL][1]</cite>
+<cite>CNIL [[1](#bibliographie)]</cite>
 
 **ATTENTION** cette technique permet encore les attques par inférences.
 
@@ -184,4 +184,10 @@ La pseudonymisation des données en général permet encore l'individualisation 
 
 ## Bibliographie
 
-[1]: https://www.cnil.fr/sites/default/files/atoms/files/wp216_fr.pdf
+[1] “ Avis 05/2014 Sur Les Techniques D’Anonymisation,” CNIL. [Online]. Available: https://www.cnil.fr/sites/default/files/atoms/files/wp216_fr.pdf . [Accessed: 17-Jul-2020].
+
+[2] G. Barta, “Challenges in the Compliance with the General Data Protection Regulation: Anonymization of Personally Identifiable Information and Related Information Security Concerns,” 2018. [Online]. Available: https://cfm.uek.krakow.pl/media/files/06/59/CFM 1_2018_PDF ONLINE.pdf#page=117. [Accessed: 17-Jul-2020].
+
+[3] “OWASP Top Ten,” OWASP. [Online]. Available: https://owasp.org/www-project-top-ten/. [Accessed: 17-Jul-2020].
+
+[4] R. Korniichuk, “Easy-to-use GDPR guide for Data Scientist. Part 2/2,” Medium, 17-Apr-2019. [Online]. Available: https://medium.com/@korniichuk/gdpr-guide-2-7c399b44ba3. [Accessed: 17-Jul-2020].

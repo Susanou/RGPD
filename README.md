@@ -2,6 +2,7 @@
   - [Pratiques de code securisé](#pratiques-de-code-securisé)
     - [Vulnérabilités les plus connues](#vulnérabilités-les-plus-connues)
       - [Injection (SQLi, OS command, ...)](#injection-sqli-os-command-)
+      - [XXE Entités externes](#xxe-entités-externes)
   - [Methodes de cryptage de données](#methodes-de-cryptage-de-données)
     - [Exemple en Python](#exemple-en-python)
   - [Quelles données protéger?](#quelles-données-protéger)
@@ -25,6 +26,7 @@ Le guide suivant contient une liste de pratique de code qui permet d'éviter es 
 Cette attaque consiste à utiliser des points d'entrée comme des inputs de formulaire et d'y inséréer une commande dans le language utilisé
 
 **Example avec SQL**
+
 ```JS
 String query = "SELECT * FROM accounts WHERE custID='" + request.getParameter("id")+"'";
 ```
@@ -38,8 +40,40 @@ Pour se défendre contre ce type d'attaque, il y a quelques solutions:
 
 - Grader les données séparées des requêtes (**LE PLUS IMMPORTANT**)
 - Utiliser des APIs sécurisées pour éviter d'avoir recours à des interpréteurs
-- Créer une "white list" pour la validation côté serveur
+- Créer une "white lidust" pour la validation côté serveur
 
+#### XXE Entités externes
+
+Cette attaque consiste a uploader un fichier XML malicieux pour extraire des données du serveur.
+
+**Example 1**
+
+Cet example tente de retirer des donnees au serveur. Dans ce cas les mots de passes dans un serveur linux
+
+```HTML
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCOTYPE foo [
+<!ELEMENT foo ANY>
+<!ENTITY xxe SYSTEM "file:///etc/passwd>
+]>
+
+<foo>&xxe;</foo>
+```
+
+**Example 2**
+
+En remplaçant la line `ENTITY` avec cette ligne ci-dessous, un attaqueur peut tenter un DOS avec des fichiers potentiellement infini
+
+```HTML
+<!ENTITY xxe SYSTEM "file:////dev/random">
+```
+
+Pour y parer ce requiretM
+
+- l'utilisation si possible de format de données moins complexes (JSON etc) et d'éviter la sérialization de données sensibles
+- patcher régulièrement les processeurs et librairies des différentes applications. Faire passer SOAP à SOAP 1.2 ou plus
+- Implementer des whitelist, filtres, ou autre ,éthodes de sanitarisation des données
+- <cite>[Cheat sheet](XML External Entity Prevention Cheat Sheet) [[5](#bibliographie)]</cite>
 
 ## Methodes de cryptage de données
 
@@ -191,3 +225,5 @@ La pseudonymisation des données en général permet encore l'individualisation 
 [3] “OWASP Top Ten,” OWASP. [Online]. Available: https://owasp.org/www-project-top-ten/. [Accessed: 17-Jul-2020].
 
 [4] R. Korniichuk, “Easy-to-use GDPR guide for Data Scientist. Part 2/2,” Medium, 17-Apr-2019. [Online]. Available: https://medium.com/@korniichuk/gdpr-guide-2-7c399b44ba3. [Accessed: 17-Jul-2020].
+
+[5] "XML External Entity Prevention Cheat Sheet". [Online]. Available: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html. [Accessed: 29-Jul-2020]
